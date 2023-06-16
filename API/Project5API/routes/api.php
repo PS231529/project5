@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/exercises', [SummamoveController::class, 'getExercises']);
 Route::get('/achievements', [SummamoveController::class, 'getAchievements']);
+
+Route::get('/exercises/{id}', [SummamoveController::class, 'show']);

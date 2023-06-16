@@ -18,4 +18,14 @@ class SummamoveController extends Controller
         return response()->json($Achievements);
     }
     
+    public function show(Request $request, $id)
+    {
+        $Exercise = Exercise::find($id);
+
+        if ($Exercise) {
+            return response()->json($Exercise);
+        } else {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+    }
 }

@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ExerciseController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ExerciseController::class, 'index'])->name('home');
+Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
+Route::post('/exercises', [ExerciseController::class, 'store'])->name('exercises.store');
+Route::delete('/exercises/{id}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');

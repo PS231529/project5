@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ExerciseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SummamoveController;
+use App\Models\Exercise;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +19,9 @@ use App\Http\Controllers\SummamoveController;
 
 
 
-Route::get('/exercises', 'App\Http\Controllers\SummamoveController@index');
-Route::post('/exercises', [SummamoveController::class, 'store'])->name('exercises.store');
-Route::get('/exercises/{id}', 'App\Http\Controllers\SummamoveController@show');
-Route::put('/exercises/{id}', 'App\Http\Controllers\SummamoveController@update');
-Route::delete('/exercises/{id}', 'App\Http\Controllers\SummamoveController@destroy');
+Route::get('/exercises', [ExerciseController::class, 'getExercises']);
+
+Route::get('/exercises/{id}', [ExerciseController::class, 'show']);
 
 
 

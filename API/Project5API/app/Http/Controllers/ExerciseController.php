@@ -7,6 +7,23 @@ use Illuminate\Http\Request;
 
 class ExerciseController extends Controller
 {
+
+    public function getExercises() {
+        $Exercises = Exercise::all();
+        return response()->json($Exercises);
+    }
+
+    
+    public function show(Request $request, $id)
+    {
+        $Exercise = Exercise::find($id);
+
+        if ($Exercise) {
+            return response()->json($Exercise);
+        } else {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+    }
     public function index()
     {
         $exercises = Exercise::orderBy('created_at', 'desc')->get();
@@ -34,6 +51,4 @@ class ExerciseController extends Controller
 
         return redirect()->route('exercises.index')->with('success', 'Exercise deleted successfully');
     }
-
-    // Add other controller methods as needed
 }

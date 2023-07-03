@@ -23,6 +23,8 @@ Route::get('/exercises', [ExerciseController::class, 'getExercises']);
 
 Route::get('/exercises/{id}', [ExerciseController::class, 'show']);
 
+Route::post('/exercises', [ExerciseController::class, 'store']);
+
 
 
 

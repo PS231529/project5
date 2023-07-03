@@ -7,30 +7,17 @@ use Illuminate\Http\Request;
 
 class ExerciseController extends Controller
 {
-
-    public function getExercises() {
-        $Exercises = Exercise::all();
-        return response()->json($Exercises);
-    }
-
-    
-    public function show(Request $request, $id)
-    {
-        $Exercise = Exercise::find($id);
-
-        if ($Exercise) {
-            return response()->json($Exercise);
-        } else {
-            return response()->json(['message' => 'Resource not found'], 404);
-        }
-    }
     public function index()
     {
-        $exercises = Exercise::orderBy('created_at', 'desc')->get();
-    
-        return view('home', compact('exercises'));
+        $exercises = Exercise::all();
+
+        return view('exercises.index', compact('exercises'));
     }
-    
+
+    public function create()
+    {
+        return view('exercises.create');
+    }
 
     public function store(Request $request)
     {
@@ -38,17 +25,38 @@ class ExerciseController extends Controller
             'exercise_name' => 'required',
             'description' => 'required',
         ]);
-    
-        $exercise = Exercise::create($validatedData);
-    
-        return redirect()->route('exercises.index')->with('success', 'Exercise created successfully');
+
+        Exercise::create($validatedData);
+
+        return redirect()->route('exercises.index');
     }
 
-    public function destroy($id)
+    public function show(Exercise $exercise)
     {
-        $exercise = Exercise::findOrFail($id);
+        return view('exercises.show', compact('exercise'));
+    }
+
+    public function edit(Exercise $exercise)
+    {
+        return view('exercises.edit', compact('exercise'));
+    }
+
+    public function update(Request $request, Exercise $exercise)
+    {
+        $validatedData = $request->validate([
+            'exercise_name' => 'required',
+            'description' => 'required',
+        ]);
+
+        $exercise->update($validatedData);
+
+        return redirect()->route('exercises.index');
+    }
+
+    public function destroy(Exercise $exercise)
+    {
         $exercise->delete();
 
-        return redirect()->route('exercises.index')->with('success', 'Exercise deleted successfully');
+        return redirect()->route('exercises.index');
     }
 }

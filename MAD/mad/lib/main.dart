@@ -77,7 +77,7 @@ class _Tab1State extends State<Tab1> {
   }
 
   Future<void> fetchExercises() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/exercises'));
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/exercises/'));
     if (response.statusCode == 200) {
       setState(() {
         exercises = jsonDecode(response.body);

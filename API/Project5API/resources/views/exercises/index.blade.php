@@ -10,7 +10,8 @@
                 <p>{{ $exercise->description }}</p>
                 <p>Created at: {{ $exercise->created_at }}</p>
                 <p>Updated at: {{ $exercise->updated_at }}</p>
-                <form class="deleteExerciseForm" action="{{ route('exercises.destroy', ['id' => $exercise->id]) }}" method="POST">
+                <form class="deleteExerciseForm" action="{{ route('exercises.destroy', ['exercise' => $exercise]) }}" method="POST">
+
                     @csrf
                     @method('DELETE')
                     <button type="submit">Delete</button>

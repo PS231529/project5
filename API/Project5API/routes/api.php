@@ -19,14 +19,11 @@ use App\Models\Exercise;
 
 
 
-Route::get('/exercises', [ExerciseController::class, 'getExercises']);
-
-Route::get('/exercises/{id}', [ExerciseController::class, 'show']);
-
+Route::get('/exercises', [ExerciseController::class, 'index']);
 Route::post('/exercises', [ExerciseController::class, 'store']);
-
-
-
+Route::get('/exercises/{exercise}', [ExerciseController::class, 'show']);
+Route::put('/exercises/{exercise}', [ExerciseController::class, 'update']);
+Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy']);
 
 Route::fallback(function () {
     return response()->json(['message' => 'Not Found'], 404);

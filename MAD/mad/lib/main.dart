@@ -51,10 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.scoreboard),
             label: 'Custom Exer.',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Tab 3',
-          ),
         ],
       ),
     );
@@ -79,31 +75,11 @@ class Exercise {
 }
 
 class _Tab1State extends State<Tab1> {
-<<<<<<< HEAD
-  List<dynamic> exercises = [];
-
-  @override
-  void initState() {
-    super.initState();
-    fetchExercises();
-  }
-
-  Future<void> fetchExercises() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/exercises/'));
-    if (response.statusCode == 200) {
-      setState(() {
-        exercises = jsonDecode(response.body);
-      });
-    } else {
-      // Handle error response
-      print('Failed to fetch exercises');
-=======
   Future<List<Exercise>> fetchExercises() async {
     final response =
     await http.get(Uri.parse('http://10.0.2.2:8000/api/exercises'));
     if (response.statusCode != 200) {
       throw Exception('Failed to fetch exercises');
->>>>>>> e142a690267303e4e7ee8895109ae03ad980fb71
     }
 
     final List<dynamic> data = jsonDecode(response.body);
@@ -117,6 +93,26 @@ class _Tab1State extends State<Tab1> {
       exercises.add(exercise);
     }
     return exercises;
+  }
+
+  void _showExerciseDescription(BuildContext context, Exercise exercise) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(exercise.exerciseName),
+          content: Text(exercise.description),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -133,6 +129,9 @@ class _Tab1State extends State<Tab1> {
               return ListTile(
                 title: Text(exercise.exerciseName),
                 subtitle: Text(exercise.description),
+                onTap: () {
+                  _showExerciseDescription(context, exercise);
+                },
               );
             },
           );

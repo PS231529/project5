@@ -27,3 +27,16 @@ Route::fallback(function () {
     return response()->json(['message' => 'Not Found'], 404);
 });
 
+Route::post('/register', [AuthenticationController::class, 'register']);
+
+Route::post('/login', [AuthenticationController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+// PROTECTED ROUTES
+
+Route::get('profile', function(Request $request) { return auth()->user();});
+
+Route::post('/logout', [AuthenticationController::class, 'logout']);
+
+});

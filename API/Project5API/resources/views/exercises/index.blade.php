@@ -3,6 +3,7 @@
 @section('content')
     <h2>Existing Exercises</h2>
 
+    <h2>Existing Exercises</h2>
     <div id="exerciseContainer">
         @foreach ($exercises as $exercise)
             <div class="exercise-card">
@@ -10,14 +11,14 @@
                 <p>{{ $exercise->description }}</p>
                 <p>Created at: {{ $exercise->created_at }}</p>
                 <p>Updated at: {{ $exercise->updated_at }}</p>
-                <form class="deleteExerciseForm" action="{{ route('exercises.destroy', ['exercise' => $exercise]) }}" method="POST">
-
+                <form class="deleteExerciseForm" action="{{ route('exercises.destroy', $exercise) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit">Delete</button>
                 </form>
             </div>
         @endforeach
+    </div>
     </div>
 
     <script>

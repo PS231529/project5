@@ -11,9 +11,7 @@ class ExerciseController extends Controller
     {
         $exercises = Exercise::all();
 
-        return response()->json([
-            'data' => $exercises,
-        ]);
+        return $exercises;
     }
 
     public function storeAPI(Request $request)

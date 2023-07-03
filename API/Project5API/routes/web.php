@@ -15,14 +15,13 @@ use App\Http\Controllers\ExerciseController;
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/exercises', [ExerciseController::class, 'indexWeb'])->name('exercises.index');
+Route::get('/exercises/create', [ExerciseController::class, 'createWeb'])->name('exercises.create');
+Route::post('/exercises', [ExerciseController::class, 'storeWeb'])->name('exercises.store');
+Route::get('/exercises/{id}', [ExerciseController::class, 'showWeb'])->name('exercises.show');
+Route::get('/exercises/{id}/edit', [ExerciseController::class, 'editWeb'])->name('exercises.edit');
+Route::put('/exercises/{id}', [ExerciseController::class, 'updateWeb'])->name('exercises.update');
+Route::delete('/exercises/{id}', [ExerciseController::class, 'destroyWeb'])->name('exercises.destroy'); 
 
-Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
-Route::get('/exercises/create', [ExerciseController::class, 'create'])->name('exercises.create');
-Route::post('/exercises', [ExerciseController::class, 'store'])->name('exercises.store');
-Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
-Route::get('/exercises/{exercise}/edit', [ExerciseController::class, 'edit'])->name('exercises.edit');
-Route::put('/exercises/{exercise}', [ExerciseController::class, 'update'])->name('exercises.update');
-Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
+Route::get('/exercises', [ExerciseController::class, 'indexWeb']);
+

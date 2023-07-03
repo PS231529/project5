@@ -17,13 +17,11 @@ use App\Models\Exercise;
 |
 */
 
-
-
-Route::get('/exercises', [ExerciseController::class, 'index']);
-Route::post('/exercises', [ExerciseController::class, 'store']);
-Route::get('/exercises/{exercise}', [ExerciseController::class, 'show']);
-Route::put('/exercises/{exercise}', [ExerciseController::class, 'update']);
-Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy']);
+Route::get('/exercises', [ExerciseController::class, 'indexAPI']);
+Route::post('/exercises', [ExerciseController::class, 'storeAPI']);
+Route::get('/exercises/{id}', [ExerciseController::class, 'showAPI']);
+Route::put('/exercises/{id}', [ExerciseController::class, 'updateAPI']);
+Route::delete('/exercises/{id}', [ExerciseController::class, 'destroyAPI']);
 
 Route::fallback(function () {
     return response()->json(['message' => 'Not Found'], 404);

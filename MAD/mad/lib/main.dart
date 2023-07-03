@@ -26,7 +26,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _tabs = [
     Tab1(),
     Tab2(),
-    Tab3(),
   ];
 
   @override
@@ -50,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.scoreboard),
-            label: 'Score',
+            label: 'Custom Exer.',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -67,7 +66,20 @@ class Tab1 extends StatefulWidget {
   _Tab1State createState() => _Tab1State();
 }
 
+class Exercise {
+  final int id;
+  final String exerciseName;
+  final String description;
+
+  Exercise({
+    required this.id,
+    required this.exerciseName,
+    required this.description,
+  });
+}
+
 class _Tab1State extends State<Tab1> {
+<<<<<<< HEAD
   List<dynamic> exercises = [];
 
   @override
@@ -85,40 +97,155 @@ class _Tab1State extends State<Tab1> {
     } else {
       // Handle error response
       print('Failed to fetch exercises');
+=======
+  Future<List<Exercise>> fetchExercises() async {
+    final response =
+    await http.get(Uri.parse('http://10.0.2.2:8000/api/exercises'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch exercises');
+>>>>>>> e142a690267303e4e7ee8895109ae03ad980fb71
     }
+
+    final List<dynamic> data = jsonDecode(response.body);
+    List<Exercise> exercises = [];
+    for (int i = 0; i < data.length; i++) {
+      final exercise = Exercise(
+        id: data[i]['id'],
+        exerciseName: data[i]['exercise_name'],
+        description: data[i]['description'],
+      );
+      exercises.add(exercise);
+    }
+    return exercises;
   }
 
   @override
   Widget build(BuildContext context) {
-    return exercises.isEmpty
-        ? Center(child: CircularProgressIndicator())
-        : ListView.builder(
-      itemCount: exercises.length,
-      itemBuilder: (BuildContext context, int index) {
-        final exercise = exercises[index];
-        return ListTile(
-          title: Text(exercise['name']),
-          subtitle: Text(exercise['description']),
-        );
+    return FutureBuilder<List<Exercise>>(
+      future: fetchExercises(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<Exercise> exercises = snapshot.data!;
+          return ListView.builder(
+            itemCount: exercises.length,
+            itemBuilder: (BuildContext context, int index) {
+              final Exercise exercise = exercises[index];
+              return ListTile(
+                title: Text(exercise.exerciseName),
+                subtitle: Text(exercise.description),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
       },
     );
   }
 }
 
-class Tab2 extends StatelessWidget {
+class Tab2 extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Tab 2'),
-    );
-  }
+  _Tab2State createState() => _Tab2State();
 }
 
-class Tab3 extends StatelessWidget {
+class _Tab2State extends State<Tab2> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _exerciseNameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _exerciseNameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      String exerciseName = _exerciseNameController.text;
+      String description = _descriptionController.text;
+
+      // Create a JSON payload
+      Map<String, dynamic> exerciseData = {
+        'exercise_name': exerciseName,
+        'description': description,
+      };
+      String jsonData = jsonEncode(exerciseData);
+
+      // Send a POST request
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/api/exercises'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonData,
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 201) {
+        // Clear the form fields
+        _exerciseNameController.clear();
+        _descriptionController.clear();
+
+        // Show a success message or perform any additional actions
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Custom exercise added!')),
+        );
+      } else {
+        // Show an error message or handle the error appropriately
+        String errorMessage = 'Failed to add custom exercise. Please try again.';
+        if (response.statusCode == 400) {
+          errorMessage = 'Invalid exercise data. Please check your input.';
+        } else if (response.statusCode == 500) {
+          errorMessage = 'Server error. Please try again later.';
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Tab 3'),
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFormField(
+              controller: _exerciseNameController,
+              decoration: InputDecoration(labelText: 'Exercise Name'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter the exercise name.';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(labelText: 'Description'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter the exercise description.';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _submitForm,
+              child: Text('Add Exercise'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

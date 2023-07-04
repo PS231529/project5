@@ -15,7 +15,8 @@ use App\Http\Controllers\ExerciseController;
 */
 
 
-Route::get('/exercises', [ExerciseController::class, 'indexWeb'])->name('exercises.index');
+
+Route::get('/exercises', [ExerciseController::class, 'indexWeb'])->name('exercises');
 Route::get('/exercises/create', [ExerciseController::class, 'createWeb'])->name('exercises.create');
 Route::post('/exercises', [ExerciseController::class, 'storeWeb'])->name('exercises.store');
 Route::get('/exercises/{id}', [ExerciseController::class, 'showWeb'])->name('exercises.show');

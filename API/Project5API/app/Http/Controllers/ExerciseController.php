@@ -120,7 +120,7 @@ class ExerciseController extends Controller
         $exercise = Exercise::findOrFail($id);
         $exercise->update($validatedData);
 
-        return redirect()->route('exercises.index')->with('success', 'Exercise updated successfully');
+        return redirect()->route('exercises.show', $exercise->id)->with('success', 'Exercise updated successfully');
     }
 
     public function destroyWeb($id)

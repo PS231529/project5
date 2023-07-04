@@ -21,8 +21,9 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/register', [AuthenticationController::class, 'register']);
 
+Route::get('/exercises', [ExerciseController::class, 'indexAPI']);
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/exercises', [ExerciseController::class, 'indexAPI']);
     Route::post('/exercises', [ExerciseController::class, 'storeAPI']);
     Route::get('/exercises/{id}', [ExerciseController::class, 'showAPI']);
     Route::put('/exercises/{id}', [ExerciseController::class, 'updateAPI']);

@@ -2,8 +2,6 @@
 
 @section('content')
     <h2>Existing Exercises</h2>
-
-    <h2>Existing Exercises</h2>
     <div id="exerciseContainer">
         @foreach ($exercises as $exercise)
             <div class="exercise-card">
@@ -20,6 +18,7 @@
         @endforeach
     </div>
     </div>
+
 
     <script>
         // Attach event listeners to the delete exercise forms

@@ -25,3 +25,5 @@ Route::delete('/exercises/{id}', [ExerciseController::class, 'destroyWeb'])->nam
 
 Route::get('/exercises', [ExerciseController::class, 'indexWeb']);
 
+
+

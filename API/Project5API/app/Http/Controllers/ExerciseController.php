@@ -6,6 +6,7 @@ use App\Models\Exercise;
 use Illuminate\Http\Request;
 class ExerciseController extends Controller
 {
+
     // API context
     public function indexAPI()
     {
